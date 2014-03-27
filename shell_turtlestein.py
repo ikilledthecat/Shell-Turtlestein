@@ -67,14 +67,15 @@ def parse_cmd(cmd_str):
         ).groupdict()
 
 
-def run_cmd(cwd, cmd, wait, input_str=None):
+def run_cmd(cwd, cmd, wait, input_str=None, executable='/bin/bash'):
     shell = isinstance(cmd, str)
     if wait:
         proc = subprocess.Popen(cmd, cwd=cwd,
                                      shell=shell,
                                      stdout=subprocess.PIPE,
                                      stderr=subprocess.PIPE,
-                                     stdin=(subprocess.PIPE if input_str else None))
+                                     stdin=(subprocess.PIPE if input_str else None)
+                                     executable= executable)
         encoded_input = None if input_str == None else input_str.encode('utf8')
         output, error = proc.communicate(encoded_input)
         return_code = proc.poll()
